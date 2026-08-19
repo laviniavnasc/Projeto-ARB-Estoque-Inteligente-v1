@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Catálogo de produtos{% endblock %}
+{% block content %}
+<section class="page">
+  <a class="back" href="{{ url_for('home') }}">←</a>
+  <div class="page-icon arb-mark">ARB</div>
+  <h1>Catálogo de<br>produtos</h1>
+
+  {% if not products %}
+    <div class="empty-state">
+      <div class="illustration">🗄️</div>
+      <h2>O catálogo de produtos está vazio.</h2>
+      <a class="primary button-link" href="{{ url_for('create_product') }}">Cadastrar primeiro produto</a>
+    </div>
+  {% else %}
+    <div class="catalog">
+      {% for p in products %}
+      <article class="product-card">
+        <div class="product-symbol">🍰</div>
+        <div>
+          <h3>{{ p.name }}</h3>
+          <p>Código: <b>{{ p.code }}</b></p>
+          <p>Quantidade: <b>{{ p.quantity }} {{ p.unit }}</b></p>
+          <p>Validade: <b>{{ p.expiry_date.strftime('%d/%m/%Y') if p.expiry_date else 'Não informada' }}</b></p>
+        </div>
+        {% if p.quantity <= 5 %}<span class="stock-alert">Estoque baixo</span>{% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

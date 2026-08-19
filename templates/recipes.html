@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Livro de receitas — ARB{% endblock %}
+{% block content %}
+<section class="page recipe-page">
+  <a class="back" href="{{ url_for('home') }}">←</a><div class="page-icon arb-mark">ARB</div><h1>Livro de<br>receitas</h1>
+  {% if not recipes %}
+    <div class="empty-state compact"><div class="recipe-hero">▤</div><h2>O livro de receitas está vazio.</h2><p>Cadastre as receitas da confeitaria e acompanhe se há ingredientes suficientes no estoque.</p><a class="primary button-link" href="{{ url_for('create_recipe') }}">Cadastrar primeira receita</a></div>
+  {% else %}
+    <div class="recipe-grid">
+    {% for r in recipes %}
+      <article class="recipe-card">
+        <div class="recipe-card-head"><div><small>{{ r.code }}</small><h3>{{ r.name }}</h3></div>{% if r.available %}<span class="recipe-status ok">Ingredientes disponíveis</span>{% else %}<span class="recipe-status bad">Falta ingrediente</span>{% endif %}</div>
+        <div class="recipe-meta">{% if r.yield_text %}<span>Rendimento: {{ r.yield_text }}</span>{% endif %}{% if r.preparation_time %}<span>Tempo: {{ r.preparation_time }}</span>{% endif %}</div>
+        <div class="recipe-ingredients">{% for ing in r.ingredients %}<div><span>{{ ing.product_name or ing.product_code }}</span><b>{{ ing.quantity }} {{ ing.unit }}</b></div>{% endfor %}</div>
+        {% if r.missing %}<div class="missing-box">Faltando/ajustar: {{ r.missing|join(', ') }}</div>{% endif %}
+        <a class="recipe-edit-link" href="{{ url_for('edit_recipe', code=r.code) }}">Editar receita →</a>
+      </article>
+    {% endfor %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

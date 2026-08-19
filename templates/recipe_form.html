@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Cadastrar receita — ARB{% endblock %}
+{% block content %}
+<section class="page form-page recipe-form-page">
+  <a class="back" href="{{ url_for('home') }}">←</a><div class="page-icon arb-mark">ARB</div><h1>Cadastrar<br>receita</h1>
+  <form class="product-form recipe-form" method="post">
+    <label>Nome da receita<input name="name" placeholder="Ex.: Bolo de chocolate" required></label>
+    <label>Código da receita<input name="code" placeholder="Ex.: R001" required></label>
+    <div class="recipe-two"><label>Rendimento<input name="yield_text" placeholder="Ex.: 12 fatias"></label><label>Tempo de preparo<input name="preparation_time" placeholder="Ex.: 50 min"></label></div>
+    <div class="recipe-section-title"><span>Ingredientes</span><button type="button" onclick="addIngredientRow()">+ Adicionar</button></div>
+    <div id="ingredientRows" class="ingredient-rows"><div class="ingredient-row"><select name="ingredient_product[]" required><option value="">Selecione um produto</option>{% for p in products %}<option value="{{ p.code }}" data-unit="{{ p.unit }}">{{ p.name }} ({{ p.code }})</option>{% endfor %}</select><input name="ingredient_quantity[]" type="number" step="0.01" min="0" placeholder="Qtd." required><select name="ingredient_unit[]"><option>Kg</option><option>g</option><option>L</option><option>ml</option><option>un</option></select><button type="button" class="remove-row" onclick="removeIngredientRow(this)">×</button></div></div>
+    <label>Modo de preparo<textarea name="instructions" rows="6" placeholder="Descreva o passo a passo da receita..."></textarea></label>
+    <button class="primary" type="submit">Cadastrar receita</button>
+  </form>
+</section>
+{% endblock %}

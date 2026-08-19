@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+{% block title %}Cadastrar produtos{% endblock %}
+{% block content %}
+<section class="page form-page decorative-page">
+  <a class="back" href="{{ url_for('home') }}">←</a>
+  <div class="page-icon">♜</div>
+  <h1>Cadastrar<br>produtos</h1>
+
+  <form class="product-form" method="post">
+    <label>Nome completo do produto
+      <input name="name" placeholder="Ex.: Farinha de Trigo" required>
+    </label>
+    <label>Insira a quantidade
+      <div class="input-row">
+        <input name="quantity" type="number" step="0.01" min="0" placeholder="Ex.: 5" required>
+        <select name="unit"><option>Kg</option><option>g</option><option>L</option><option>ml</option><option>un</option></select>
+      </div>
+    </label>
+    <label>Insira a validade
+      <input name="expiry_date" type="date">
+    </label>
+    <label>Código do produto
+      <input name="code" placeholder="Ex.: P001" required>
+    </label>
+    <button class="primary" type="submit">Cadastrar</button>
+  </form>
+  <div class="decor-corner">⌁</div>
+</section>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Editar receita — ARB{% endblock %}
+{% block content %}
+<section class="page form-page recipe-form-page">
+  <a class="back" href="{{ url_for('home') }}">←</a><div class="page-icon arb-mark">ARB</div><h1>Editar<br>receita</h1>
+  {% if recipe %}
+  <form class="product-form recipe-form" method="post">
+    <input type="hidden" name="code" value="{{ recipe.code }}"><label>Código da receita<input value="{{ recipe.code }}" disabled></label><label>Nome da receita<input name="name" value="{{ recipe.name }}" required></label>
+    <div class="recipe-two"><label>Rendimento<input name="yield_text" value="{{ recipe.yield_text or '' }}"></label><label>Tempo de preparo<input name="preparation_time" value="{{ recipe.preparation_time or '' }}"></label></div>
+    <div class="recipe-section-title"><span>Ingredientes</span><button type="button" onclick="addIngredientRow()">+ Adicionar</button></div>
+    <div id="ingredientRows" class="ingredient-rows">{% for ing in ingredients %}<div class="ingredient-row"><select name="ingredient_product[]" required><option value="">Selecione um produto</option>{% for p in products %}<option value="{{ p.code }}" data-unit="{{ p.unit }}" {% if p.code==ing.product_code %}selected{% endif %}>{{ p.name }} ({{ p.code }})</option>{% endfor %}</select><input name="ingredient_quantity[]" type="number" step="0.01" min="0" value="{{ ing.quantity }}" required><select name="ingredient_unit[]">{% for u in ['Kg','g','L','ml','un'] %}<option value="{{ u }}" {% if u==ing.unit %}selected{% endif %}>{{ u }}</option>{% endfor %}</select><button type="button" class="remove-row" onclick="removeIngredientRow(this)">×</button></div>{% endfor %}</div>
+    <label>Modo de preparo<textarea name="instructions" rows="6">{{ recipe.instructions or '' }}</textarea></label><button class="primary" type="submit">Salvar alterações</button>
+  </form>
+  {% else %}
+    {% if searched %}<div class="empty">Receita não encontrada.</div>{% endif %}
+    <form class="product-form" method="get"><label>Insira o código da receita<input name="code" placeholder="Ex.: R001" required></label><button class="primary" type="submit">Buscar receita</button></form>
+  {% endif %}
+</section>
+{% endblock %}

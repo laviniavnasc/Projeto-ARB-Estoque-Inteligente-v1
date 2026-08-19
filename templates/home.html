@@ -1,0 +1,44 @@
+
+{% extends "base.html" %}
+{% block title %}Menu inicial — ARB Estoque Inteligente{% endblock %}
+{% block content %}
+<section class="page home-page">
+  <div class="home-wave"></div>
+  <div class="welcome">
+    <p>Seja bem-vindo(a),</p>
+    <h1>o que deseja fazer hoje?</h1>
+  </div>
+
+  <div class="home-grid">
+    <a class="menu-card" href="{{ url_for('create_product') }}">
+      <span class="menu-icon plus">＋</span><b>Cadastrar produtos</b><span class="chevron">›</span>
+    </a>
+    <a class="menu-card" href="{{ url_for('delete_product') }}">
+      <span class="menu-icon trash">♧</span><b>Excluir produtos</b><span class="chevron">›</span>
+    </a>
+    <a class="menu-card" href="{{ url_for('edit_product') }}">
+      <span class="menu-icon pencil">✎</span><b>Editar produtos</b><span class="chevron">›</span>
+    </a>
+    <a class="menu-card" href="{{ url_for('products') }}">
+      <span class="menu-icon bag">▣</span><b>Catálogo de produtos</b><span class="chevron">›</span>
+    </a>
+    <a class="menu-card" href="{{ url_for('recipes') }}">
+      <span class="menu-icon book">▤</span><b>Livro de Receitas</b><span class="chevron">›</span>
+    </a>
+    <a class="menu-card" href="{{ url_for('create_recipe') }}">
+      <span class="menu-icon plus">＋</span><b>Cadastrar receita</b><span class="chevron">›</span>
+    </a>
+    <a class="menu-card" href="{{ url_for('edit_recipe') }}">
+      <span class="menu-icon pencil">✎</span><b>Editar receita</b><span class="chevron">›</span>
+    </a>
+  </div>
+
+  <div class="home-summary">
+    <div><strong>{{ total_products }}</strong><span>produtos</span></div>
+    <div><strong>{{ total_recipes }}</strong><span>receitas</span></div>
+    <a href="{{ url_for('notification_page') }}" class="{% if alerts %}has-alert{% endif %}">
+      <strong>{{ alerts }}</strong><span>notificações</span>
+    </a>
+  </div>
+</section>
+{% endblock %}

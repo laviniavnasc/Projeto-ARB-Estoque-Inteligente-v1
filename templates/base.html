@@ -1,0 +1,70 @@
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{% block title %}ARB Estoque Inteligente{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+<div class="app-shell">
+  {% if session.get('user_id') %}
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-cake arb-mark">ARB</div>
+      <div><strong>ARB Estoque</strong><em>Inteligente</em><small>para confeitaria</small></div>
+    </div>
+    <nav>
+      <a href="{{ url_for('home') }}">⌂ <span>Início</span></a>
+      <a href="{{ url_for('create_product') }}">＋ <span>Cadastrar produtos</span></a>
+      <a href="{{ url_for('delete_product') }}">♧ <span>Excluir produtos</span></a>
+      <a href="{{ url_for('edit_product') }}">✎ <span>Editar produtos</span></a>
+      <a href="{{ url_for('products') }}">▣ <span>Catálogo de produtos</span></a>
+      <a href="{{ url_for('recipes') }}">▤ <span>Livro de Receitas</span></a>
+      <a href="{{ url_for('create_recipe') }}">＋ <span>Cadastrar receita</span></a>
+      <a href="{{ url_for('edit_recipe') }}">✎ <span>Editar receita</span></a>
+      <a href="{{ url_for('notification_page') }}">♧ <span>Notificações</span>
+        {% set side_count = notification_count() %}
+        {% if side_count %}<b class="nav-badge">{{ side_count }}</b>{% endif %}
+      </a>
+    </nav>
+    <a class="logout" href="{{ url_for('logout') }}">Sair</a>
+  </aside>
+  {% endif %}
+
+  <main class="main">
+    {% if session.get('user_id') %}
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Abrir menu" onclick="toggleSidebar()">☰</button>
+      <div class="top-brand"><b>ARB</b> Estoque <span>Inteligente</span></div>
+      <a class="bell-wrap" href="{{ url_for('notification_page') }}" aria-label="Notificações">
+        <span class="bell-icon">♧</span>
+        {% set top_count = notification_count() %}
+        {% if top_count %}<span class="bell-badge">{{ top_count if top_count < 100 else '99+' }}</span>{% endif %}
+      </a>
+    </header>
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-wrap">
+        {% for category, message in messages %}
+        <div class="flash {{ category }}">
+          <span class="flash-check">{% if category == 'success' %}✓{% else %}!{% endif %}</span>
+          <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>

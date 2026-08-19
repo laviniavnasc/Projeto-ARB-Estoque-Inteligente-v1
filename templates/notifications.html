@@ -1,0 +1,41 @@
+
+{% extends "base.html" %}
+{% block title %}Notificações{% endblock %}
+{% block content %}
+<section class="page notification-page">
+  <a class="back" href="{{ url_for('home') }}">←</a>
+  <div class="notification-title">
+    <h1>Notificações</h1>
+    {% if notifications %}<span class="title-count">{{ notifications|length }}</span>{% endif %}
+  </div>
+
+  {% if not notifications %}
+    <div class="notification-empty">
+      <div class="bell-illustration">♧</div>
+      <h2>A aba de notificações<br>está vazia.</h2>
+      <p>Quando houver estoque baixo ou produtos próximos da validade, os avisos aparecerão aqui.</p>
+    </div>
+  {% else %}
+    <div class="notification-list">
+      <div class="notification-intro">
+        <b>Olá, {{ session.get('user_name', 'usuário') }}!</b>
+        <span>Confira os itens que precisam de atenção.</span>
+      </div>
+
+      {% for n in notifications %}
+      <article class="notice-card {{ n.type }}">
+        <div class="notice-icon">{{ n.icon }}</div>
+        <div class="notice-content">
+          <div class="notice-head">
+            <h3>{{ n.title }}</h3>
+            <span>{{ n.code }}</span>
+          </div>
+          <p>{{ n.text }}</p>
+          <a href="{{ url_for('products') }}">Ver catálogo →</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

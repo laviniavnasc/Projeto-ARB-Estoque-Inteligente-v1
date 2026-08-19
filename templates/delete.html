@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Exclusão de produtos — ARB{% endblock %}
+{% block content %}
+<section class="page form-page">
+  <a class="back" href="{{ url_for('home') }}">←</a><div class="page-icon arb-mark">ARB</div><h1>Exclusão de<br>produtos</h1>
+  {% if product %}
+    <div class="product-preview"><b>{{ product.name }}</b><span>{{ product.code }} · {{ product.quantity }} {{ product.unit }}</span></div>
+    <form class="product-form" method="post" onsubmit="return confirm('Tem certeza que deseja excluir este produto?')"><input type="hidden" name="code" value="{{ product.code }}"><button class="primary danger" type="submit">Excluir</button></form>
+  {% else %}
+    {% if searched %}<div class="empty">Produto não encontrado.</div>{% endif %}
+    <form class="product-form" method="get"><label>Insira o código do produto<input name="code" placeholder="Ex.: P001" required></label><button class="primary" type="submit">Buscar</button></form>
+  {% endif %}
+</section>
+{% endblock %}
