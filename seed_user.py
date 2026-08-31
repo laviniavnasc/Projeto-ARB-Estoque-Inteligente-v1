@@ -12,7 +12,7 @@ config = {
 
 conn = mysql.connector.connect(**config)
 cur = conn.cursor()
-password_hash = generate_password_hash("admin123")
+password_hash = generate_password_hash("SUA_SENHA_AQUI")
 cur.execute("""
     INSERT INTO users (name, login, password_hash)
     VALUES (%s, %s, %s)
@@ -21,4 +21,4 @@ cur.execute("""
 conn.commit()
 cur.close()
 conn.close()
-print("Usuário criado/atualizado: admin / admin123")
+print("Usuário administrador criado/atualizado com sucesso.")
