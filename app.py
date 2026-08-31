@@ -72,13 +72,25 @@ def global_data(): return {'notification_count': notification_count, 'brand_name
 @app.route('/')
 def index(): return redirect(url_for('home') if 'user_id' in session else url_for('login'))
 
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        users = query('SELECT * FROM users WHERE login=%s', (request.form['login'].strip(),), True)
-        if users and check_password_hash(users[0]['password_hash'], request.form['password']):
-            session['user_id']=users[0]['id']; session['user_name']=users[0]['name']; return redirect(url_for('home'))
-        flash('Login ou senha incorretos.','error')
+        email = request.form['email'].strip().lower()
+        password = request.form['password']
+
+        users = query(
+            'SELECT * FROM users WHERE email=%s',
+            (email,),
+            True
+        )
+
+        if users and check_password_hash(users[0]['password_hash'], password):
+            session['user_id'] = users[0]['id']
+            session['user_name'] = users[0]['name']
+            return redirect(url_for('home'))
+
+        flash('E-mail ou senha incorretos.', 'error')
+
     return render_template('login.html')
 
 @app.route('/logout')
