@@ -120,10 +120,10 @@ def create_user():
 
         query(
             '''
-            INSERT INTO users (name, email, password_hash)
-            VALUES (%s, %s, %s)
+            INSERT INTO users (name, login, email, password_hash)
+            VALUES (%s, %s, %s, %s)
             ''',
-            (name, email, password_hash)
+            (name, email, email, password_hash)
         )
 
         flash('Usuário cadastrado com sucesso!', 'success')
