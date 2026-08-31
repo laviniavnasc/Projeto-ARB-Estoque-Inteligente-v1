@@ -1,8 +1,10 @@
-
 {% extends "base.html" %}
+
 {% block title %}Login — ARB Estoque Inteligente{% endblock %}
+
 {% block content %}
 <section class="login-page">
+
   <div class="login-art">
     <div class="art-blob"></div>
     <div class="art-cake">♜</div>
@@ -11,16 +13,49 @@
     <div class="art-cupcakes">🧁</div>
     <div class="art-tools">⌁</div>
   </div>
+
   <div class="login-card">
     <div class="mobile-cake">♜</div>
+
     <h1>Estoque <em>Inteligente</em></h1>
     <p class="subtitle">para confeitaria</p>
+
     <form method="post">
-      <label><span>♙</span><input name="login" autocomplete="username" placeholder="Insira seu login" required></label>
-      <label><span>▣</span><input type="password" name="password" autocomplete="current-password" placeholder="Insira sua senha" required><button type="button" class="show-pass" onclick="togglePassword()">◉</button></label>
-      <a class="forgot" href="#" onclick="alert('Entre em contato com o administrador para redefinir sua senha.');return false;">Esqueci minha senha</a>
-      <button class="primary big" type="submit">Entrar</button>
+
+      <label>
+        <span>✉</span>
+        <input
+          type="email"
+          name="email"
+          autocomplete="email"
+          placeholder="Insira seu e-mail"
+          required
+        >
+      </label>
+
+      <label>
+        <span>▣</span>
+        <input
+          type="password"
+          name="password"
+          autocomplete="current-password"
+          placeholder="Insira sua senha"
+          required
+        >
+
+        <button
+          type="button"
+          class="show-pass"
+          onclick="togglePassword()"
+        >◉</button>
+      </label>
+
+      <button class="primary big" type="submit">
+        Entrar
+      </button>
+
     </form>
   </div>
+
 </section>
 {% endblock %}
