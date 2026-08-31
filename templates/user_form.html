@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar usuário — ARB Estoque Inteligente{% endblock %}
+
+{% block content %}
+<section class="phone-page form-page">
+
+  <a class="back" href="{{ url_for('home') }}">←</a>
+
+  <div class="page-badge">ARB</div>
+
+  <h1>Cadastrar usuário</h1>
+
+  <form class="form-stack" method="post">
+
+    <label>
+      Nome completo
+      <input
+        type="text"
+        name="name"
+        placeholder="Digite o nome completo"
+        required
+      >
+    </label>
+
+    <label>
+      E-mail
+      <input
+        type="email"
+        name="email"
+        placeholder="Digite o e-mail"
+        required
+      >
+    </label>
+
+    <label>
+      Senha
+      <input
+        type="password"
+        name="password"
+        placeholder="Digite a senha"
+        required
+      >
+    </label>
+
+    <label>
+      Confirmar senha
+      <input
+        type="password"
+        name="confirm_password"
+        placeholder="Digite a senha novamente"
+        required
+      >
+    </label>
+
+    <button class="primary" type="submit">
+      Cadastrar usuário
+    </button>
+
+  </form>
+
+</section>
+{% endblock %}

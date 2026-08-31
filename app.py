@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import mysql.connector
 from mysql.connector import Error
-from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from datetime import date
 from decimal import Decimal
@@ -92,6 +92,44 @@ def login():
         flash('E-mail ou senha incorretos.', 'error')
 
     return render_template('login.html')
+
+@app.route('/users/new', methods=['GET', 'POST'])
+@login_required
+def create_user():
+    if request.method == 'POST':
+        name = request.form['name'].strip()
+        email = request.form['email'].strip().lower()
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
+        if password != confirm_password:
+            flash('As senhas não coincidem.', 'error')
+            return redirect(url_for('create_user'))
+
+        existing_user = query(
+            'SELECT * FROM users WHERE email=%s',
+            (email,),
+            True
+        )
+
+        if existing_user:
+            flash('Já existe um usuário com esse e-mail.', 'error')
+            return redirect(url_for('create_user'))
+
+        password_hash = generate_password_hash(password)
+
+        query(
+            '''
+            INSERT INTO users (name, email, password_hash)
+            VALUES (%s, %s, %s)
+            ''',
+            (name, email, password_hash)
+        )
+
+        flash('Usuário cadastrado com sucesso!', 'success')
+        return redirect(url_for('create_user'))
+
+    return render_template('user_form.html')
 
 @app.route('/logout')
 def logout(): session.clear(); return redirect(url_for('login'))
