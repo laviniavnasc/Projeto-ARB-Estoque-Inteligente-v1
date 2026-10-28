@@ -233,9 +233,13 @@ a{text-decoration:none;color:inherit}
 @media (max-width: 680px) {
   .login-page {
     min-height: 100vh;
+    background-image: url("images/login_cel.png");
+    background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
   }
 }
+
 .login-art {
   background: transparent;
 }
@@ -258,18 +262,70 @@ a{text-decoration:none;color:inherit}
 }
 
 .login-card {
+  align-self: center;
   width: 100%;
-  max-width: 450px;
-  padding: 30px;
+  max-width: 500px;
+  padding: 24px;
   justify-self: center;
+}
+
+.login-logo {
+  display: block;
+  width: min(100%, 400px);
+  height: auto;
+  margin: 0 auto 14px;
+}
+
+.login-card form {
+  display: grid;
+  gap: 13px;
+}
+
+.login-card label {
+  height: 54px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 13px;
+  color: #5e4747;
+}
+
+.login-card input {
+  border: 0;
+  outline: 0;
+  flex: 1;
+  background: transparent;
+  font-size: 14px;
+}
+
+.login-card .primary {
+  height: 54px;
+  margin-top: 4px;
+  font-size: 15px;
 }
 
 @media (max-width: 680px) {
   .login-card {
-    padding: 32px 22px;
+    padding: 28px 22px;
   }
 
   .login-logo {
-    width: min(100%, 320px);
+    width: min(100%, 340px);
+  }
+
+  .login-card label {
+    height: 52px;
+  }
+
+  .login-card input {
+    font-size: 13px;
+  }
+
+  .login-card .primary {
+    height: 52px;
+    font-size: 14px;
   }
 }
