@@ -275,12 +275,12 @@ a{text-decoration:none;color:inherit}
     width: min(100%, 320px);
   }
 }
-/* Fundo exclusivo da tela Início em celulares */
+
 @media (max-width: 680px) {
   .home-page {
     min-height: calc(100vh - 70px);
     padding: 34px 18px;
-    background-image: linear-gradient(rgba(252, 248, 243, .4), rgba(252, 248, 243, .4)), url("images/inicio-celular.png");
+    background-image: linear-gradient(rgba(252, 248, 243, .4), rgba(252, 248, 243, .4)), url("images/inicio_cel.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
