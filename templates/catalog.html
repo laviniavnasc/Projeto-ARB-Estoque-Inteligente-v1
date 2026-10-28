@@ -1,16 +1,16 @@
 {% extends "base.html" %}
-{% block title %}Catálogo de produtos{% endblock %}
+{% block title %}Catálogo de ingredientes{% endblock %}
 {% block content %}
 <section class="page">
   <a class="back" href="{{ url_for('home') }}">←</a>
   <div class="page-icon arb-mark">ARB</div>
-  <h1>Catálogo de<br>produtos</h1>
+  <h1>Catálogo de<br>ingredientes</h1>
 
   {% if not products %}
     <div class="empty-state">
       <div class="illustration">🗄️</div>
-      <h2>O catálogo de produtos está vazio.</h2>
-      <a class="primary button-link" href="{{ url_for('create_product') }}">Cadastrar primeiro produto</a>
+      <h2>O catálogo de ingredientes está vazio.</h2>
+      <a class="primary button-link" href="{{ url_for('create_product') }}">Cadastrar primeiro ingrediente</a>
     </div>
   {% else %}
     <div class="catalog">

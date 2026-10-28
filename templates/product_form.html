@@ -1,14 +1,14 @@
 
 {% extends "base.html" %}
-{% block title %}Cadastrar produtos{% endblock %}
+{% block title %}Cadastrar ingredientes{% endblock %}
 {% block content %}
 <section class="page form-page decorative-page">
   <a class="back" href="{{ url_for('home') }}">←</a>
   <div class="page-icon">♜</div>
-  <h1>Cadastrar<br>produtos</h1>
+  <h1>Cadastrar<br>ingredientes</h1>
 
   <form class="product-form" method="post">
-    <label>Nome completo do produto
+    <label>Nome completo do ingrediente
       <input name="name" placeholder="Ex.: Farinha de Trigo" required>
     </label>
     <label>Insira a quantidade
@@ -20,7 +20,7 @@
     <label>Insira a validade
       <input name="expiry_date" type="date">
     </label>
-    <label>Código do produto
+    <label>Código do ingrediente
       <input name="code" placeholder="Ex.: P001" required>
     </label>
     <button class="primary" type="submit">Cadastrar</button>

@@ -59,7 +59,7 @@ def notifications():
         if p['expiry_date']:
             days = (p['expiry_date'] - today).days
             if days < 0:
-                result.append({'key':f"expired:{p['code']}",'type':'expired','icon':'×','title':'Produto vencido','text':f"{p['name']} venceu em {p['expiry_date'].strftime('%d/%m/%Y')}.",'code':p['code']})
+                result.append({'key':f"expired:{p['code']}",'type':'expired','icon':'×','title':'ingrediente vencido','text':f"{p['name']} venceu em {p['expiry_date'].strftime('%d/%m/%Y')}.",'code':p['code']})
             elif days == 0:
                 result.append({'key':f"expiry-today:{p['code']}",'type':'expiry','icon':'!','title':'Validade vence hoje','text':f"{p['name']} vence hoje.",'code':p['code']})
             elif days <= 7:
@@ -120,8 +120,8 @@ def create_product():
         code=request.form['code'].strip().upper()
         try:
             query('INSERT INTO products(code,name,quantity,unit,expiry_date) VALUES(%s,%s,%s,%s,%s)', (code,request.form['name'].strip(),request.form['quantity'],request.form['unit'],request.form['expiry_date'] or None))
-            flash(f'Cadastro completo com sucesso! Código do produto: {code}','success'); return redirect(url_for('create_product'))
-        except Error as e: flash('Já existe um produto com esse código.' if e.errno==1062 else str(e),'error')
+            flash(f'Cadastro completo com sucesso! Código do ingrediente: {code}','success'); return redirect(url_for('create_product'))
+        except Error as e: flash('Já existe um ingrediente com esse código.' if e.errno==1062 else str(e),'error')
     return render_template('product_form.html')
 
 @app.route('/products/edit', methods=['GET','POST'])
@@ -129,7 +129,7 @@ def create_product():
 def edit_product():
     code=(request.args.get('code','') if request.method=='GET' else request.form.get('code','')).strip().upper(); product=get_product(code) if code else None
     if request.method=='POST':
-        if not product: flash('Produto não encontrado.','error'); return redirect(url_for('edit_product'))
+        if not product: flash('ingrediente não encontrado.','error'); return redirect(url_for('edit_product'))
         query('UPDATE products SET quantity=%s,unit=%s,expiry_date=%s WHERE code=%s',(request.form['quantity'],request.form['unit'],request.form['expiry_date'] or None,code))
         flash('Edição completa com sucesso!','success'); return redirect(url_for('edit_product',code=code))
     return render_template('edit.html', product=product, searched=bool(code))
@@ -139,7 +139,7 @@ def edit_product():
 def delete_product():
     code=(request.args.get('code','') if request.method=='GET' else request.form.get('code','')).strip().upper(); product=get_product(code) if code else None
     if request.method=='POST':
-        if not product: flash('Produto não encontrado.','error'); return redirect(url_for('delete_product'))
+        if not product: flash('ingrediente não encontrado.','error'); return redirect(url_for('delete_product'))
         query('DELETE FROM products WHERE code=%s',(code,)); flash('Exclusão completa com sucesso!','success'); return redirect(url_for('delete_product'))
     return render_template('delete.html', product=product, searched=bool(code))
 
