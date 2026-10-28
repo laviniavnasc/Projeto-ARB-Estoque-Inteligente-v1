@@ -224,7 +224,7 @@ a{text-decoration:none;color:inherit}
 }
 .login-page {
   min-height: 100vh;
-  background-image: url("images/loginbckg.png");
+  background-image: url("images/loginbg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
