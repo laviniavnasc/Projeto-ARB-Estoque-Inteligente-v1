@@ -46,25 +46,31 @@ def get_recipe(code):
     return rows[0] if rows else None
 
 def notifications():
+    user_id = session.get('user_id')
+    if not user_id: return []
     products = query('SELECT * FROM products ORDER BY expiry_date IS NULL, expiry_date ASC, name', fetch=True)
     today = date.today(); result = []
     for p in products:
         qty = float(p['quantity'])
         if qty <= 2:
-            result.append({'type':'critical','icon':'!','title':'Estoque crítico','text':f"{p['name']} está com apenas {qty:g} {p['unit']}.",'code':p['code']})
+            result.append({'key':f"stock-critical:{p['code']}",'type':'critical','icon':'!','title':'Estoque crítico','text':f"{p['name']} está com apenas {qty:g} {p['unit']}.",'code':p['code']})
         elif qty <= 5:
-            result.append({'type':'low','icon':'↓','title':'Estoque baixo','text':f"{p['name']} está com {qty:g} {p['unit']}.",'code':p['code']})
+            result.append({'key':f"stock-low:{p['code']}",'type':'low','icon':'↓','title':'Estoque baixo','text':f"{p['name']} está com {qty:g} {p['unit']}.",'code':p['code']})
         if p['expiry_date']:
             days = (p['expiry_date'] - today).days
             if days < 0:
-                result.append({'type':'expired','icon':'×','title':'Produto vencido','text':f"{p['name']} venceu em {p['expiry_date'].strftime('%d/%m/%Y')}.",'code':p['code']})
+                result.append({'key':f"expired:{p['code']}",'type':'expired','icon':'×','title':'Produto vencido','text':f"{p['name']} venceu em {p['expiry_date'].strftime('%d/%m/%Y')}.",'code':p['code']})
             elif days == 0:
-                result.append({'type':'expiry','icon':'!','title':'Validade vence hoje','text':f"{p['name']} vence hoje.",'code':p['code']})
+                result.append({'key':f"expiry-today:{p['code']}",'type':'expiry','icon':'!','title':'Validade vence hoje','text':f"{p['name']} vence hoje.",'code':p['code']})
             elif days <= 7:
-                result.append({'type':'expiry','icon':'!','title':'Validade próxima','text':f"{p['name']} vence em {days} dia(s).",'code':p['code']})
+                result.append({'key':f"expiry-soon:{p['code']}",'type':'expiry','icon':'!','title':'Validade próxima','text':f"{p['name']} vence em {days} dia(s).",'code':p['code']})
+    read_rows = query('SELECT notification_key FROM notification_reads WHERE user_id=%s', (user_id,), True)
+    read_keys = {row['notification_key'] for row in read_rows}
+    for notification in result:
+        notification['is_read'] = notification['key'] in read_keys
     return result
 
-def notification_count(): return len(notifications())
+def notification_count(): return sum(not n['is_read'] for n in notifications())
 
 @app.context_processor
 def global_data(): return {'notification_count': notification_count, 'brand_name':'ARB Estoque Inteligente'}
@@ -140,6 +146,22 @@ def delete_product():
 @app.route('/notifications')
 @login_required
 def notification_page(): return render_template('notifications.html', notifications=notifications())
+
+@app.route('/notifications/read', methods=['POST'])
+@login_required
+def mark_notification_read():
+    notification_key = request.form.get('notification_key', '').strip()
+    active_keys = {n['key'] for n in notifications()}
+    if notification_key and notification_key in active_keys:
+        query('INSERT INTO notification_reads (user_id, notification_key) VALUES (%s, %s) ON DUPLICATE KEY UPDATE read_at=CURRENT_TIMESTAMP', (session['user_id'], notification_key))
+    return redirect(url_for('notification_page'))
+
+@app.route('/notifications/read-all', methods=['POST'])
+@login_required
+def mark_all_notifications_read():
+    for notification in notifications():
+        query('INSERT INTO notification_reads (user_id, notification_key) VALUES (%s, %s) ON DUPLICATE KEY UPDATE read_at=CURRENT_TIMESTAMP', (session['user_id'], notification['key']))
+    return redirect(url_for('notification_page'))
 
 @app.route('/recipes')
 @login_required
