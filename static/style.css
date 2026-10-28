@@ -181,3 +181,44 @@ a{text-decoration:none;color:inherit}
   }
 
 }
+/*RESPONSIVIDADE P CELULAR*/
+
+@media (max-width: 768px) {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .page {
+    width: 100%;
+    padding: 28px 16px;
+  }
+
+  .product-form,
+  .recipe-form {
+    width: 100%;
+  }
+
+  .catalog {
+    grid-template-columns: 1fr;
+  }
+
+  .home-grid{
+    width: 100%;
+  }
+
+  .menu-card {
+    width: 100%;
+  }
+
+  .home-summary{
+    width: 100%;
+  }
+
+  .flash-wrap {
+    left: 16px;
+    right: 16px;
+    max-width: none;
+  }
+
+}
