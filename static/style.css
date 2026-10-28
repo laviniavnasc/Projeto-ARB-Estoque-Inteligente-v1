@@ -222,3 +222,11 @@ a{text-decoration:none;color:inherit}
   }
 
 }
+.art-cake img,
+.mobile-cake img,
+.art-cupcakes img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
