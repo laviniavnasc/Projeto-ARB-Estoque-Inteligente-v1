@@ -278,7 +278,7 @@ a{text-decoration:none;color:inherit}
 /* Fundo exclusivo da tela Início em celulares */
 @media (max-width: 680px) {
   .home-page {
-    background-image: url("images/inicio-celular.png");
+    background-image: url("images/iniciocel.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
