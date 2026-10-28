@@ -244,8 +244,6 @@ a{text-decoration:none;color:inherit}
   width: min(100%, 360px);
   height: auto;
   margin: 0 auto 30px;
-  -webkit-mask-image: radial-gradient(ellipse, #000 88%, transparent 100%);
-  mask-image: radial-gradient(ellipse, #000 88%, transparent 100%);
 }
 .main:has(.login-page) {
   margin-left: 0;
