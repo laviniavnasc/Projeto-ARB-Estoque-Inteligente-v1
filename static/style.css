@@ -245,3 +245,6 @@ a{text-decoration:none;color:inherit}
   height: auto;
   margin: 0 auto 32px;
 }
+.main:has(.login-page) {
+  margin-left: 0;
+}
