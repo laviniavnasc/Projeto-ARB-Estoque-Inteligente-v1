@@ -222,11 +222,17 @@ a{text-decoration:none;color:inherit}
   }
 
 }
-.art-cake img,
-.mobile-cake img,
-.art-cupcakes img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+.login-page {
+  min-height: 100vh;
+  background-image: url("images/loginbckg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 680px) {
+  .login-page {
+    min-height: 100vh;
+    background-position: center;
+  }
 }
