@@ -286,3 +286,16 @@ a{text-decoration:none;color:inherit}
     background-repeat: no-repeat;
   }
 }
+.top-brand img {
+  display: block;
+  width: 210px;
+  max-height: 48px;
+  object-fit: contain;
+}
+
+@media (max-width: 680px) {
+  .top-brand img {
+    width: 170px;
+    max-height: 42px;
+  }
+}
