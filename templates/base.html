@@ -74,7 +74,11 @@
         href="{{ url_for('notification_page') }}"
         aria-label="Notificações"
       >
-        <span class="bell-icon">♧</span>
+      <img
+      class="bell-icon"
+      src="{{ url_for('static', filename='images/notfi_icon.png') }}"
+      alt=""
+      >
 
         {% set top_count = notification_count() %}
         {% if top_count %}
