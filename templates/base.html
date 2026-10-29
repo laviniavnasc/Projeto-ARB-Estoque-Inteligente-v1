@@ -40,7 +40,13 @@
       <a href="{{ url_for('edit_recipe') }}">✎ <span>Editar receita</span></a>
 
       <a href="{{ url_for('notification_page') }}">
-        ♧ <span>Notificações</span>
+        <img
+          class="bell-icon"
+          src="{{ url_for('static', filename='images/notfi_icon.png') }}"
+          alt=""
+        >
+        <span>Notificações</span>
+
         {% set side_count = notification_count() %}
         {% if side_count %}
           <b class="nav-badge">{{ side_count }}</b>
@@ -74,11 +80,11 @@
         href="{{ url_for('notification_page') }}"
         aria-label="Notificações"
       >
-      <img
-      class="bell-icon"
-      src="{{ url_for('static', filename='images/notfi_icon.png') }}"
-      alt=""
-      >
+        <img
+          class="bell-icon"
+          src="{{ url_for('static', filename='images/notfi_icon.png') }}"
+          alt=""
+        >
 
         {% set top_count = notification_count() %}
         {% if top_count %}
