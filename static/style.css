@@ -354,3 +354,8 @@ a{text-decoration:none;color:inherit}
     background-image: url("images/fundo-paginas-celular.png");
   }
 }
+.bell-illustration img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}

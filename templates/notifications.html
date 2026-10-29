@@ -12,7 +12,12 @@
 
   {% if not notifications %}
     <div class="notification-empty">
-      <div class="bell-illustration">♧</div>
+      <div class="bell-illustration">
+        <img
+          src="{{ url_for('static', filename='images/icon_teladenot.png') }}"
+          alt=""
+        >
+      </div>
       <h2>A aba de notificações<br>está vazia.</h2>
       <p>Quando houver estoque baixo ou ingredientes próximos da validade, os avisos aparecerão aqui.</p>
     </div>
