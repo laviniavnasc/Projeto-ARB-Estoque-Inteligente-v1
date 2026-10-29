@@ -342,3 +342,15 @@ a{text-decoration:none;color:inherit}
     background-repeat: no-repeat;
   }
 }
+.main:has(.form-page) {
+  background-image: url("images/fundo-paginas.png");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 680px) {
+  .main:has(.form-page) {
+    background-image: url("images/fundo-paginas-celular.png");
+  }
+}
