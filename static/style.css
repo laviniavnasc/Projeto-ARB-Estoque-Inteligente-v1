@@ -305,3 +305,10 @@ a{text-decoration:none;color:inherit}
     max-height: none;
   }
 }
+.menu-icon-img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex: 0 0 20px;
+}
