@@ -293,13 +293,15 @@ a{text-decoration:none;color:inherit}
 .top-brand img {
   display: block;
   width: 400px;
-  max-height: 80px;
+  height: 70px;
+  max-height: none;
   object-fit: contain;
 }
 
 @media (max-width: 680px) {
   .top-brand img {
     width: 350px;
-    max-height: 70px;
+    height: 60px;
+    max-height: none;
   }
 }
