@@ -312,3 +312,22 @@ a{text-decoration:none;color:inherit}
   object-fit: contain;
   flex: 0 0 20px;
 }
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar nav {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  align-content: start;
+  padding-bottom: 12px;
+}
+
+.sidebar .logout {
+  position: static;
+  flex: none;
+  margin-top: auto;
+  padding: 14px 11px 0;
+}
