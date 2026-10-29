@@ -20,8 +20,6 @@
 
   {% if session.get('user_id') %}
   <aside class="sidebar" id="sidebar">
-    </div>
-
     <nav>
       <a href="{{ url_for('home') }}">
         <img class="menu-icon-img"
@@ -29,54 +27,60 @@
              alt="">
         <span>Início</span>
       </a>
+
       <a href="{{ url_for('create_product') }}">
         <img class="menu-icon-img"
              src="{{ url_for('static', filename='images/cad.ing_icon.png') }}"
              alt="">
         <span>Cadastrar ingredientes</span>
       </a>
+
       <a href="{{ url_for('delete_product') }}">
         <img class="menu-icon-img"
              src="{{ url_for('static', filename='images/ex.ing_icon.png') }}"
              alt="">
         <span>Excluir ingredientes</span>
-      </a>      
+      </a>
+
       <a href="{{ url_for('edit_product') }}">
         <img class="menu-icon-img"
              src="{{ url_for('static', filename='images/ed.ing_icon.png') }}"
              alt="">
         <span>Editar ingredientes</span>
-      </a>      
+      </a>
+
       <a href="{{ url_for('products') }}">
         <img class="menu-icon-img"
              src="{{ url_for('static', filename='images/cat.ing_icon.png') }}"
              alt="">
         <span>Catálogo de ingredientes</span>
-      </a>      
+      </a>
+
       <a href="{{ url_for('recipes') }}">
         <img class="menu-icon-img"
              src="{{ url_for('static', filename='images/livro.rec_icon.png') }}"
              alt="">
         <span>Livro de Receitas</span>
-      </a>      
+      </a>
+
       <a href="{{ url_for('create_recipe') }}">
         <img class="menu-icon-img"
              src="{{ url_for('static', filename='images/cad.rec_icon.png') }}"
              alt="">
         <span>Cadastrar receita</span>
-      </a>      
+      </a>
+
       <a href="{{ url_for('edit_recipe') }}">
         <img class="menu-icon-img"
              src="{{ url_for('static', filename='images/ed.rec_icon.png') }}"
              alt="">
         <span>Editar receita</span>
       </a>
+
       <a href="{{ url_for('notification_page') }}">
-        <img
-          class="bell-icon"
-          src="{{ url_for('static', filename='images/notfi_icon.png') }}"
-          alt=""
-        >
+        <img class="bell-icon"
+             src="{{ url_for('static', filename='images/notfi_icon.png') }}"
+             alt="">
         <span>Notificações</span>
 
         {% set side_count = notification_count() %}
