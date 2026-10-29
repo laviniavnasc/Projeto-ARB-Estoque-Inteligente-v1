@@ -28,8 +28,8 @@ a{text-decoration:none;color:inherit}
 .sidebar-brand strong,.sidebar-brand em{display:block;font-family:"DM Serif Display";font-size:19px;line-height:1}.sidebar-brand em{color:var(--wine);font-weight:600}.sidebar-brand small{display:block;font-size:9px;margin-top:4px;color:var(--muted)}
 .sidebar nav{display:grid;gap:4px}.sidebar nav a{min-height:45px;padding:11px 12px;border-radius:12px;display:flex;align-items:center;gap:12px;font-size:13px;position:relative}.sidebar nav a:hover{background:#f5e7df;color:var(--wine-dark)}.sidebar nav a>span{flex:1}.nav-badge{font-size:10px;background:var(--wine);color:white;border-radius:99px;padding:3px 7px}
 .logout{position:absolute;bottom:25px;left:28px;color:var(--wine);font-size:13px;font-weight:700}
-.main{width:100%;min-height:100vh;margin-left:0;background:var(--cream)}
-.topbar{height:70px;background:rgba(255,252,249,.96);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:20;backdrop-filter:blur(10px)}
+.main { width: 100%;min-height: 100vh;margin-left: 0;background-color: var(--cream);background-image: url("images/fundo_telas.png");background-size: cover;background-position: center top;background-repeat: no-repeat;
+}.topbar{height:70px;background:rgba(255,252,249,.96);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:20;backdrop-filter:blur(10px)}
 .top-brand{font-family:"DM Serif Display";font-size:20px}.top-brand span{color:var(--wine);font-style:italic}
 .menu-btn{display:block;border:0;background:transparent;font-size:24px;color:var(--brown);cursor:pointer}
 .bell-wrap{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;position:relative}.bell-wrap:hover{background:#f6e9e0}.bell-icon{display:block;width:32px;height:32px;object-fit:contain}.bell-badge{position:absolute;right:-1px;top:-2px;min-width:18px;height:18px;padding:0 4px;border-radius:99px;background:var(--wine);color:white;font-size:9px;font-weight:700;display:grid;place-items:center;border:2px solid #fffaf6}
@@ -330,4 +330,15 @@ a{text-decoration:none;color:inherit}
   flex: none;
   margin-top: auto;
   padding: 14px 11px 0;
+}
+.page-icon {
+  display: none !important;
+}
+@media (max-width: 680px) {
+  .main {
+    background-image: url("images/fundo_telascel.png");
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+  }
 }

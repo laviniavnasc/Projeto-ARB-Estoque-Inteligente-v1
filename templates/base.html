@@ -103,13 +103,13 @@
         onclick="toggleSidebar()"
       >☰</button>
 
-      <div class="top-brand">
+      <a class="top-brand" href="{{ url_for('home') }}" aria-label="Voltar ao início">
         <img
           class="top-logo"
           src="{{ url_for('static', filename='images/logo1.png') }}"
           alt="ARB Estoque Inteligente"
         >
-      </div>
+      </a>
 
       <a
         class="bell-wrap"
