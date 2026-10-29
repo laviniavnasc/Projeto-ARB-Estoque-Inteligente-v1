@@ -307,8 +307,8 @@ a{text-decoration:none;color:inherit}
 }
 .menu-icon-img {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 35px;
+  height: 35px;
   object-fit: contain;
   flex: 0 0 20px;
 }
