@@ -292,8 +292,8 @@ a{text-decoration:none;color:inherit}
 }
 .top-brand img {
   display: block;
-  width: 550px;
-  height: 85px;
+  width: 600px;
+  height: 110px;
   max-height: none;
   object-fit: contain;
 }
@@ -301,7 +301,7 @@ a{text-decoration:none;color:inherit}
 @media (max-width: 680px) {
   .top-brand img {
     width: 400px;
-    height: 70px;
+    height: 90px;
     max-height: none;
   }
 }
