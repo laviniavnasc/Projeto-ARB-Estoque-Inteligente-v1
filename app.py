@@ -309,7 +309,7 @@ def create_recipe():
     )
 
     if request.method == 'POST':
-        code = request.form['code'].strip().upper()
+        code = uuid.uuid4().hex[:24].upper()
 
         try:
             rid = query(
@@ -342,7 +342,7 @@ def create_recipe():
                         (rid, product_code, quantity, unit)
                     )
 
-            flash(f'Receita cadastrada com sucesso! Código: {code}', 'success')
+            flash('Receita cadastrada com sucesso!', 'success')
             return redirect(url_for('create_recipe'))
 
         except Error as e:
