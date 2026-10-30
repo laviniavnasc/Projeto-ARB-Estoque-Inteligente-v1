@@ -412,3 +412,10 @@ a{text-decoration:none;color:inherit}
     background-image: none;
   }
 }
+
+.topbar .global-back {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 20px;
+  z-index: 25;
+}
