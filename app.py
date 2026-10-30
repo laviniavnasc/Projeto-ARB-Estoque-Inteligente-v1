@@ -49,9 +49,9 @@ def create_user_from_railway_variables():
         return
 
     query(
-        'INSERT INTO users (name, login, password_hash) VALUES (%s, %s, %s)',
-        (name, login, generate_password_hash(password))
-    )
+    'INSERT INTO users (name, login, email, password_hash) VALUES (%s, %s, %s, %s)',
+    (name, login, login, generate_password_hash(password))
+)
     print('Novo usuário cadastrado.')
 
 create_user_from_railway_variables()
