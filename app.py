@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import mysql.connector
 from mysql.connector import Error
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from functools import wraps
 from datetime import date
 from decimal import Decimal
@@ -78,7 +78,8 @@ def notifications():
 def notification_count(): return sum(not n['is_read'] for n in notifications())
 
 @app.context_processor
-def global_data(): return {'notification_count': notification_count, 'brand_name':'ARB Estoque Inteligente'}
+def global_data():
+    return {'notification_count': notification_count}
 
 @app.route('/')
 def index(): return redirect(url_for('home') if 'user_id' in session else url_for('login'))
@@ -128,8 +129,7 @@ def create_product():
         if not name or not brand:
             flash('Informe o nome do ingrediente e a marca.', 'error')
             return render_template('product_form.html')
-
-        # Código interno gerado automaticamente para manter os vínculos com receitas.
+        
         code = uuid.uuid4().hex[:24].upper()
 
         try:
@@ -381,9 +381,5 @@ def delete_recipe():
         flash('Receita excluída com sucesso!', 'success')
 
     return redirect(url_for('recipes'))
-
-@app.route('/api/notifications')
-@login_required
-def api_notifications(): return jsonify(notifications())
 
 if __name__=='__main__': app.run(host='0.0.0.0',port=5000,debug=True)
