@@ -400,7 +400,7 @@ a{text-decoration:none;color:inherit}
   .main:has(.login-page) {
     min-height: 100vh;
     min-height: 100dvh;
-    background-image: url("images/login_cel.png");
+    background-image: url("images/login-celular.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -409,7 +409,7 @@ a{text-decoration:none;color:inherit}
   .login-page {
     min-height: 100vh;
     min-height: 100dvh;
-    background-image: none;
+    background: transparent;
   }
 }
 
@@ -426,4 +426,7 @@ a{text-decoration:none;color:inherit}
   height: 96px;
   object-fit: contain;
   margin: 0 auto;
+}
+.main:has(.home-page) .global-back {
+  display: none;
 }
