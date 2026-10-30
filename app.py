@@ -300,16 +300,57 @@ def recipes():
         view.append(r)
 
     return render_template('recipes.html', recipes=view)
-@app.route('/recipes/new', methods=['GET','POST'])
+@app.route('/recipes/new', methods=['GET', 'POST'])
 @login_required
 def create_recipe():
-    products=query('SELECT code,name,brand,unit,quantity FROM products ORDER BY name,brand',fetch=True)
-    if request.method=='POST':
-code = request.form['code'].strip().upper()            rid=query('INSERT INTO recipes(code,name,yield_text,preparation_time,instructions) VALUES(%s,%s,%s,%s,%s)',(code,request.form['name'].strip(),request.form.get('yield_text') or None,request.form.get('preparation_time') or None,request.form.get('instructions') or None))
-            for pc,qty,unit in zip(request.form.getlist('ingredient_product[]'),request.form.getlist('ingredient_quantity[]'),request.form.getlist('ingredient_unit[]')):
-                if pc and qty: query('INSERT INTO recipe_ingredients(recipe_id,product_code,quantity,unit) VALUES(%s,%s,%s,%s)',(rid,pc,qty,unit))
-            flash(f'Receita cadastrada com sucesso! Código: {code}','success'); return redirect(url_for('create_recipe'))
-        except Error as e: flash('Já existe uma receita com esse código.' if e.errno==1062 else str(e),'error')
+    products = query(
+        'SELECT code, name, brand, unit, quantity FROM products ORDER BY name',
+        fetch=True
+    )
+
+    if request.method == 'POST':
+        code = request.form['code'].strip().upper()
+
+        try:
+            rid = query(
+                '''
+                INSERT INTO recipes
+                    (code, name, yield_text, preparation_time, instructions)
+                VALUES (%s, %s, %s, %s, %s)
+                ''',
+                (
+                    code,
+                    request.form['name'].strip(),
+                    request.form.get('yield_text') or None,
+                    request.form.get('preparation_time') or None,
+                    request.form.get('instructions') or None
+                )
+            )
+
+            product_codes = request.form.getlist('ingredient_product[]')
+            quantities = request.form.getlist('ingredient_quantity[]')
+            units = request.form.getlist('ingredient_unit[]')
+
+            for product_code, quantity, unit in zip(product_codes, quantities, units):
+                if product_code and quantity:
+                    query(
+                        '''
+                        INSERT INTO recipe_ingredients
+                            (recipe_id, product_code, quantity, unit)
+                        VALUES (%s, %s, %s, %s)
+                        ''',
+                        (rid, product_code, quantity, unit)
+                    )
+
+            flash(f'Receita cadastrada com sucesso! Código: {code}', 'success')
+            return redirect(url_for('create_recipe'))
+
+        except Error as e:
+            if e.errno == 1062:
+                flash('Já existe uma receita com esse código.', 'error')
+            else:
+                flash(str(e), 'error')
+
     return render_template('recipe_form.html', products=products)
 
 @app.route('/recipes/edit', methods=['GET','POST'])
