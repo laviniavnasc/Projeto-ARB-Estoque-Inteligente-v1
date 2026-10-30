@@ -6,6 +6,7 @@ from functools import wraps
 from datetime import date
 from decimal import Decimal
 import os
+import uuid
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'arb-estoque-inteligente-local')
@@ -37,8 +38,12 @@ def login_required(view):
         return view(*args, **kwargs)
     return wrapped
 
-def get_product(code):
-    rows = query('SELECT * FROM products WHERE code=%s', (code,), True)
+def get_product(product_id):
+    rows = query(
+        'SELECT * FROM products WHERE id=%s',
+        (product_id,),
+        True
+    )
     return rows[0] if rows else None
 
 def get_recipe(code):
@@ -113,35 +118,126 @@ def home():
 @login_required
 def products(): return render_template('catalog.html', products=query('SELECT * FROM products ORDER BY name', fetch=True))
 
-@app.route('/products/new', methods=['GET','POST'])
+@app.route('/products/new', methods=['GET', 'POST'])
 @login_required
 def create_product():
     if request.method == 'POST':
-        code=request.form['code'].strip().upper()
-        try:
-            query('INSERT INTO products(code,name,quantity,unit,expiry_date) VALUES(%s,%s,%s,%s,%s)', (code,request.form['name'].strip(),request.form['quantity'],request.form['unit'],request.form['expiry_date'] or None))
-            flash(f'Cadastro completo com sucesso! Código do ingrediente: {code}','success'); return redirect(url_for('create_product'))
-        except Error as e: flash('Já existe um ingrediente com esse código.' if e.errno==1062 else str(e),'error')
-    return render_template('product_form.html')
+        name = request.form.get('name', '').strip()
+        brand = request.form.get('brand', '').strip()
 
-@app.route('/products/edit', methods=['GET','POST'])
+        if not name or not brand:
+            flash('Informe o nome do ingrediente e a marca.', 'error')
+            return render_template('product_form.html')
+
+        # Código interno gerado automaticamente para manter os vínculos com receitas.
+        code = uuid.uuid4().hex[:24].upper()
+
+        try:
+            query(
+                'INSERT INTO products(code, name, brand, quantity, unit, expiry_date) '
+                'VALUES(%s, %s, %s, %s, %s, %s)',
+                (
+                    code,
+                    name,
+                    brand,
+                    request.form['quantity'],
+                    request.form['unit'],
+                    request.form.get('expiry_date') or None
+                )
+            )
+            flash('Ingrediente cadastrado com sucesso!', 'success')
+            return redirect(url_for('create_product'))
+        except Error as e:
+            flash(
+                'Não foi possível cadastrar o ingrediente. Confira os dados e tente novamente.'
+                if e.errno == 1062 else str(e),
+                'error'
+            )
+
+    return render_template('product_form.html')
+@app.route('/products/edit', methods=['GET', 'POST'])
 @login_required
 def edit_product():
-    code=(request.args.get('code','') if request.method=='GET' else request.form.get('code','')).strip().upper(); product=get_product(code) if code else None
-    if request.method=='POST':
-        if not product: flash('ingrediente não encontrado.','error'); return redirect(url_for('edit_product'))
-        query('UPDATE products SET quantity=%s,unit=%s,expiry_date=%s WHERE code=%s',(request.form['quantity'],request.form['unit'],request.form['expiry_date'] or None,code))
-        flash('Edição completa com sucesso!','success'); return redirect(url_for('edit_product',code=code))
-    return render_template('edit.html', product=product, searched=bool(code))
+    raw_id = (
+        request.form.get('product_id', '')
+        if request.method == 'POST'
+        else request.args.get('product_id', '')
+    ).strip()
 
-@app.route('/products/delete', methods=['GET','POST'])
+    product_id = int(raw_id) if raw_id.isdigit() else None
+    product = get_product(product_id) if product_id else None
+
+    products = query(
+        'SELECT id, name, brand, quantity, unit FROM products ORDER BY name, brand',
+        fetch=True
+    )
+
+    if request.method == 'POST':
+        if not product:
+            flash('Ingrediente não encontrado.', 'error')
+            return redirect(url_for('edit_product'))
+
+        name = request.form.get('name', '').strip()
+        brand = request.form.get('brand', '').strip()
+
+        if not name or not brand:
+            flash('Informe o nome do ingrediente e a marca.', 'error')
+            return redirect(url_for('edit_product', product_id=product_id))
+
+        query(
+            'UPDATE products SET name=%s, brand=%s, quantity=%s, unit=%s, expiry_date=%s WHERE id=%s',
+            (
+                name,
+                brand,
+                request.form['quantity'],
+                request.form['unit'],
+                request.form.get('expiry_date') or None,
+                product_id
+            )
+        )
+
+        flash('Ingrediente atualizado com sucesso!', 'success')
+        return redirect(url_for('edit_product', product_id=product_id))
+
+    return render_template(
+        'edit.html',
+        product=product,
+        products=products,
+        searched=bool(raw_id)
+    )
+
+@app.route('/products/delete', methods=['GET', 'POST'])
 @login_required
 def delete_product():
-    code=(request.args.get('code','') if request.method=='GET' else request.form.get('code','')).strip().upper(); product=get_product(code) if code else None
-    if request.method=='POST':
-        if not product: flash('ingrediente não encontrado.','error'); return redirect(url_for('delete_product'))
-        query('DELETE FROM products WHERE code=%s',(code,)); flash('Exclusão completa com sucesso!','success'); return redirect(url_for('delete_product'))
-    return render_template('delete.html', product=product, searched=bool(code))
+    raw_id = (
+        request.form.get('product_id', '')
+        if request.method == 'POST'
+        else request.args.get('product_id', '')
+    ).strip()
+
+    product_id = int(raw_id) if raw_id.isdigit() else None
+    product = get_product(product_id) if product_id else None
+
+    products = query(
+        'SELECT id, name, brand, quantity, unit FROM products ORDER BY name, brand',
+        fetch=True
+    )
+
+    if request.method == 'POST':
+        if not product:
+            flash('Ingrediente não encontrado.', 'error')
+            return redirect(url_for('delete_product'))
+
+        query('DELETE FROM products WHERE id=%s', (product_id,))
+        flash('Ingrediente excluído com sucesso!', 'success')
+        return redirect(url_for('delete_product'))
+
+    return render_template(
+        'delete.html',
+        product=product,
+        products=products,
+        searched=bool(raw_id)
+    )
 
 @app.route('/notifications')
 @login_required
@@ -168,8 +264,7 @@ def mark_all_notifications_read():
 def recipes():
     rows=query('SELECT * FROM recipes ORDER BY name',fetch=True); view=[]
     for r in rows:
-        ings=query('SELECT ri.*,p.name product_name,p.quantity stock_quantity,p.unit stock_unit FROM recipe_ingredients ri LEFT JOIN products p ON p.code=ri.product_code WHERE ri.recipe_id=%s ORDER BY p.name',(r['id'],),True)
-        missing=[]
+        ings=query('SELECT ri.*,p.name product_name,p.brand product_brand,p.quantity stock_quantity,p.unit stock_unit FROM recipe_ingredients ri LEFT JOIN products p ON p.code=ri.product_code WHERE ri.recipe_id=%s ORDER BY p.name,p.brand',(r['id'],),True)     
         for ing in ings:
             if not ing['product_name']: missing.append(ing['product_code']); continue
             if ing['unit']!=ing['stock_unit'] or Decimal(str(ing['stock_quantity'])) < Decimal(str(ing['quantity'])): missing.append(ing['product_name'])
@@ -179,7 +274,7 @@ def recipes():
 @app.route('/recipes/new', methods=['GET','POST'])
 @login_required
 def create_recipe():
-    products=query('SELECT code,name,unit,quantity FROM products ORDER BY name',fetch=True)
+    products=query('SELECT code,name,brand,unit,quantity FROM products ORDER BY name,brand',fetch=True)
     if request.method=='POST':
         code=request.form['code'].strip().upper()
         try:
@@ -193,7 +288,7 @@ def create_recipe():
 @app.route('/recipes/edit', methods=['GET','POST'])
 @login_required
 def edit_recipe():
-    products=query('SELECT code,name,unit,quantity FROM products ORDER BY name',fetch=True)
+    products=query('SELECT code,name,brand,unit,quantity FROM products ORDER BY name,brand',fetch=True)
     code=(request.args.get('code','') if request.method=='GET' else request.form.get('code','')).strip().upper(); recipe=get_recipe(code) if code else None
     if request.method=='POST':
         if not recipe: flash('Receita não encontrada.','error'); return redirect(url_for('edit_recipe'))

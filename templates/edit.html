@@ -1,20 +1,65 @@
 {% extends "base.html" %}
 {% block title %}Editar ingredientes — ARB{% endblock %}
+
 {% block content %}
 <section class="page form-page">
-  <a class="back" href="{{ url_for('home') }}">←</a><div class="page-icon arb-mark">ARB</div><h1>Editar<br>ingredientes</h1>
+  <a class="back" href="{{ url_for('home') }}">←</a>
+  <h1>Editar<br>ingredientes</h1>
+
   {% if product %}
   <form class="product-form" method="post">
-    <input type="hidden" name="code" value="{{ product.code }}">
-    <label>Código do ingrediente<input value="{{ product.code }}" disabled></label>
-    <label>Nome do ingrediente<input value="{{ product.name }}" disabled></label>
-    <label>Insira a quantidade<div class="input-row"><input name="quantity" type="number" step="0.01" min="0" value="{{ product.quantity }}" required><select name="unit">{% for u in ['Kg','g','L','ml','un'] %}<option value="{{ u }}" {% if product.unit==u %}selected{% endif %}>{{ u }}</option>{% endfor %}</select></div></label>
-    <label>Insira a validade<input name="expiry_date" type="date" value="{{ product.expiry_date or '' }}"></label>
-    <button class="primary" type="submit">Editar</button>
+    <input type="hidden" name="product_id" value="{{ product.id }}">
+
+    <label>Nome do ingrediente
+      <input name="name" value="{{ product.name }}" required>
+    </label>
+
+    <label>Marca
+      <input name="brand" value="{{ product.brand or '' }}" required>
+    </label>
+
+    <label>Insira a quantidade
+      <div class="input-row">
+        <input name="quantity" type="number" step="0.01" min="0"
+               value="{{ product.quantity }}" required>
+        <select name="unit">
+          {% for u in ['Kg', 'g', 'L', 'ml', 'un'] %}
+          <option value="{{ u }}" {% if product.unit == u %}selected{% endif %}>
+            {{ u }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </label>
+
+    <label>Insira a validade
+      <input name="expiry_date" type="date"
+             value="{{ product.expiry_date or '' }}">
+    </label>
+
+    <button class="primary" type="submit">Salvar alterações</button>
   </form>
+
   {% else %}
-    {% if searched %}<div class="empty">ingrediente não encontrado.</div>{% endif %}
-    <form class="product-form" method="get"><label>Insira o código do ingrediente<input name="code" placeholder="Ex.: P001" required></label><button class="primary" type="submit">Buscar</button></form>
+    {% if searched %}
+      <div class="empty">Ingrediente não encontrado.</div>
+    {% endif %}
+
+    <form class="product-form" method="get">
+      <label>Selecione o ingrediente
+        <select name="product_id" required>
+          <option value="">Escolha nome e marca</option>
+          {% for p in products %}
+          <option value="{{ p.id }}">
+            {{ p.name }} — {{ p.brand or 'marca não informada' }}
+            ({{ p.quantity }} {{ p.unit }})
+          </option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <button class="primary" type="submit">Buscar</button>
+    </form>
   {% endif %}
 </section>
 {% endblock %}

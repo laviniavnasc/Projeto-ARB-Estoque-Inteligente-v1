@@ -1,14 +1,44 @@
 {% extends "base.html" %}
 {% block title %}Exclusão de ingredientes — ARB{% endblock %}
+
 {% block content %}
 <section class="page form-page">
-  <a class="back" href="{{ url_for('home') }}">←</a><div class="page-icon arb-mark">ARB</div><h1>Exclusão de<br>ingredientes</h1>
+  <a class="back" href="{{ url_for('home') }}">←</a>
+  <h1>Exclusão de<br>ingredientes</h1>
+
   {% if product %}
-    <div class="product-preview"><b>{{ product.name }}</b><span>{{ product.code }} · {{ product.quantity }} {{ product.unit }}</span></div>
-    <form class="product-form" method="post" onsubmit="return confirm('Tem certeza que deseja excluir este ingrediente?')"><input type="hidden" name="code" value="{{ product.code }}"><button class="primary danger" type="submit">Excluir</button></form>
+    <div class="product-preview">
+      <b>{{ product.name }}</b>
+      <span>Marca: {{ product.brand or 'não informada' }}</span>
+      <span>Quantidade: {{ product.quantity }} {{ product.unit }}</span>
+    </div>
+
+    <form class="product-form" method="post"
+          onsubmit="return confirm('Tem certeza que deseja excluir este ingrediente?')">
+      <input type="hidden" name="product_id" value="{{ product.id }}">
+      <button class="primary danger" type="submit">Excluir</button>
+    </form>
+
   {% else %}
-    {% if searched %}<div class="empty">ingrediente não encontrado.</div>{% endif %}
-    <form class="product-form" method="get"><label>Insira o código do ingrediente<input name="code" placeholder="Ex.: P001" required></label><button class="primary" type="submit">Buscar</button></form>
+    {% if searched %}
+      <div class="empty">Ingrediente não encontrado.</div>
+    {% endif %}
+
+    <form class="product-form" method="get">
+      <label>Selecione o ingrediente
+        <select name="product_id" required>
+          <option value="">Escolha nome e marca</option>
+          {% for p in products %}
+          <option value="{{ p.id }}">
+            {{ p.name }} — {{ p.brand or 'marca não informada' }}
+            ({{ p.quantity }} {{ p.unit }})
+          </option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <button class="primary" type="submit">Buscar</button>
+    </form>
   {% endif %}
 </section>
 {% endblock %}

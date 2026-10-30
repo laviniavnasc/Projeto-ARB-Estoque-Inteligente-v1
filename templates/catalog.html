@@ -19,8 +19,7 @@
         <div class="product-symbol">🍰</div>
         <div>
           <h3>{{ p.name }}</h3>
-          <p>Código: <b>{{ p.code }}</b></p>
-          <p>Quantidade: <b>{{ p.quantity }} {{ p.unit }}</b></p>
+          <p>Marca: <b>{{ p.brand or 'Não informada' }}</b></p>          <p>Quantidade: <b>{{ p.quantity }} {{ p.unit }}</b></p>
           <p>Validade: <b>{{ p.expiry_date.strftime('%d/%m/%Y') if p.expiry_date else 'Não informada' }}</b></p>
         </div>
         {% if p.quantity <= 5 %}<span class="stock-alert">Estoque baixo</span>{% endif %}

@@ -23,16 +23,13 @@ CREATE TABLE IF NOT EXISTS products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     code VARCHAR(30) NOT NULL UNIQUE,
     name VARCHAR(150) NOT NULL,
+    brand VARCHAR(120) NOT NULL DEFAULT '',
     quantity DECIMAL(10,2) NOT NULL DEFAULT 0,
     unit ENUM('Kg','g','L','ml','un') NOT NULL DEFAULT 'Kg',
     expiry_date DATE NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
--- Depois de criar as tabelas, execute:
--- python seed_user.py
--- para criar o usuário inicial admin / admin123.
 
 CREATE TABLE IF NOT EXISTS recipes (
     id INT AUTO_INCREMENT PRIMARY KEY,
