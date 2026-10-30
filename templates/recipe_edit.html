@@ -5,9 +5,9 @@
   <a class="back" href="{{ url_for('home') }}">←</a><div class="page-icon arb-mark">ARB</div><h1>Editar<br>receita</h1>
   {% if recipe %}
   <form class="product-form" method="get">
-    <label>Nome da receita
+    <label> Selecione uma receita
       <select name="recipe_id" required>
-        <option value="">Selecione uma receita</option>
+        <option value="">Ex.: Nome da receita</option>
         {% for item in recipes %}
         <option value="{{ item.id }}">{{ item.name }}</option>
         {% endfor %}
@@ -18,9 +18,9 @@
   {% else %}
     {% if searched %}<div class="empty">Receita não encontrada.</div>{% endif %}
     <form class="product-form" method="get">
-      <label>Nome da receita
+      <label>Selecione uma receita
         <select name="recipe_id" required>
-          <option value="">Selecione uma receita</option>
+          <option value="">Ex.: Nome da receita</option>
           {% for item in recipes %}
           <option value="{{ item.id }}">{{ item.name }}</option>
           {% endfor %}
