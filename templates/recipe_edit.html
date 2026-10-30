@@ -5,8 +5,7 @@
   <a class="back" href="{{ url_for('home') }}">←</a><div class="page-icon arb-mark">ARB</div><h1>Editar<br>receita</h1>
   {% if recipe %}
   <form class="product-form" method="get">
-    <label>
-      Nome da receita
+    <label>Nome da receita
       <select name="recipe_id" required>
         <option value="">Selecione uma receita</option>
         {% for item in recipes %}
@@ -18,7 +17,16 @@
   </form>
   {% else %}
     {% if searched %}<div class="empty">Receita não encontrada.</div>{% endif %}
-    <form class="product-form" method="get"><label>Insira o código da receita<input name="code" placeholder="Ex.: R001" required></label><button class="primary" type="submit">Buscar receita</button></form>
-  {% endif %}
+    <form class="product-form" method="get">
+      <label>Nome da receita
+        <select name="recipe_id" required>
+          <option value="">Selecione uma receita</option>
+          {% for item in recipes %}
+          <option value="{{ item.id }}">{{ item.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button class="primary" type="submit">Buscar receita</button>
+    </form>  {% endif %}
 </section>
 {% endblock %}
