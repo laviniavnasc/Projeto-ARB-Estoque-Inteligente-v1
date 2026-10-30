@@ -305,8 +305,7 @@ def recipes():
 def create_recipe():
     products=query('SELECT code,name,brand,unit,quantity FROM products ORDER BY name,brand',fetch=True)
     if request.method=='POST':
-        code=request.form['code'].strip().upper()
-        try:
+    code = uuid.uuid4().hex[:24].upper()        try:
             rid=query('INSERT INTO recipes(code,name,yield_text,preparation_time,instructions) VALUES(%s,%s,%s,%s,%s)',(code,request.form['name'].strip(),request.form.get('yield_text') or None,request.form.get('preparation_time') or None,request.form.get('instructions') or None))
             for pc,qty,unit in zip(request.form.getlist('ingredient_product[]'),request.form.getlist('ingredient_quantity[]'),request.form.getlist('ingredient_unit[]')):
                 if pc and qty: query('INSERT INTO recipe_ingredients(recipe_id,product_code,quantity,unit) VALUES(%s,%s,%s,%s)',(rid,pc,qty,unit))

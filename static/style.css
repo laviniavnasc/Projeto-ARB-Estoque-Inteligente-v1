@@ -400,7 +400,7 @@ a{text-decoration:none;color:inherit}
   .main:has(.login-page) {
     min-height: 100vh;
     min-height: 100dvh;
-    background-image: url("images/login-celular.png");
+    background-image: url("images/login_cel.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
