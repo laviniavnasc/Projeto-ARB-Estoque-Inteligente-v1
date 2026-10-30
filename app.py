@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import mysql.connector
 from mysql.connector import Error
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
 from datetime import date
 from decimal import Decimal
@@ -30,6 +30,31 @@ def query(sql, params=(), fetch=False):
         conn.commit(); return cur.lastrowid
     finally:
         cur.close(); conn.close()
+
+def create_user_from_railway_variables():
+    name = os.getenv('NEW_USER_NAME', '').strip()
+    login = os.getenv('NEW_USER_LOGIN', '').strip()
+    password = os.getenv('NEW_USER_PASSWORD', '')
+
+    if not name or not login or not password:
+        return
+
+    existing_user = query(
+        'SELECT id FROM users WHERE login=%s',
+        (login,),
+        True
+    )
+
+    if existing_user:
+        return
+
+    query(
+        'INSERT INTO users (name, login, password_hash) VALUES (%s, %s, %s)',
+        (name, login, generate_password_hash(password))
+    )
+    print('Novo usuário cadastrado.')
+
+create_user_from_railway_variables()
 
 def login_required(view):
     @wraps(view)
