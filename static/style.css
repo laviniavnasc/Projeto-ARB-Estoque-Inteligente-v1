@@ -335,7 +335,6 @@ a{text-decoration:none;color:inherit}
   display: none !important;
 }
 
-/*expandir imagem de fundo do cel/*
 @media (max-width: 680px) {
   .main {
     background-image: url("images/fundo_telascel.png");
@@ -382,4 +381,16 @@ a{text-decoration:none;color:inherit}
   padding: 8px 12px;
   font: 600 10px Poppins, sans-serif;
   cursor: pointer;
+}
+
+.global-back {
+  border: 0;
+  padding: 8px;
+  background: transparent;
+  color: var(--brown);
+  font-size: 24px;
+  cursor: pointer;
+}
+.back {
+  display: none;
 }
