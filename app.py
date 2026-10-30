@@ -262,15 +262,44 @@ def mark_all_notifications_read():
 @app.route('/recipes')
 @login_required
 def recipes():
-    rows=query('SELECT * FROM recipes ORDER BY name',fetch=True); view=[]
-    for r in rows:
-        ings=query('SELECT ri.*,p.name product_name,p.brand product_brand,p.quantity stock_quantity,p.unit stock_unit FROM recipe_ingredients ri LEFT JOIN products p ON p.code=ri.product_code WHERE ri.recipe_id=%s ORDER BY p.name,p.brand',(r['id'],),True)     
-        for ing in ings:
-            if not ing['product_name']: missing.append(ing['product_code']); continue
-            if ing['unit']!=ing['stock_unit'] or Decimal(str(ing['stock_quantity'])) < Decimal(str(ing['quantity'])): missing.append(ing['product_name'])
-        r['ingredients']=ings; r['missing']=missing; r['available']=bool(ings) and not missing; view.append(r)
-    return render_template('recipes.html', recipes=view)
+    rows = query('SELECT * FROM recipes ORDER BY name', fetch=True)
+    view = []
 
+    for r in rows:
+        ingredients = query(
+            'SELECT ri.*, p.name product_name, p.brand product_brand, '
+            'p.quantity stock_quantity, p.unit stock_unit '
+            'FROM recipe_ingredients ri '
+            'LEFT JOIN products p ON p.code = ri.product_code '
+            'WHERE ri.recipe_id = %s '
+            'ORDER BY p.name, p.brand',
+            (r['id'],),
+            True
+        )
+
+        missing = []
+
+        for ing in ingredients:
+            if not ing['product_name']:
+                missing.append(ing['product_code'])
+                continue
+
+            ingredient_label = ing['product_name']
+            if ing.get('product_brand'):
+                ingredient_label += f" — {ing['product_brand']}"
+
+            if (
+                ing['unit'] != ing['stock_unit']
+                or Decimal(str(ing['stock_quantity'])) < Decimal(str(ing['quantity']))
+            ):
+                missing.append(ingredient_label)
+
+        r['ingredients'] = ingredients
+        r['missing'] = missing
+        r['available'] = bool(ingredients) and not missing
+        view.append(r)
+
+    return render_template('recipes.html', recipes=view)
 @app.route('/recipes/new', methods=['GET','POST'])
 @login_required
 def create_recipe():
