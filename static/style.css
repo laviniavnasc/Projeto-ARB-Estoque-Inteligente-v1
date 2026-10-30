@@ -337,7 +337,7 @@ a{text-decoration:none;color:inherit}
 
 @media (max-width: 680px) {
   .main {
-    background-image: url("images/fundo_telascel.png");
+    background-image: url("images/iniciocel.png");
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
@@ -345,7 +345,7 @@ a{text-decoration:none;color:inherit}
 }
 
 .main:has(.form-page) {
-  background-image: url("images/fundo-paginas.png");
+  background-image: url("images/fundo_telas.png");
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -353,7 +353,7 @@ a{text-decoration:none;color:inherit}
 
 @media (max-width: 680px) {
   .main:has(.form-page) {
-    background-image: url("images/fundo-paginas-celular.png");
+    background-image: url("images/fundo_telascel.png");
   }
 }
 .bell-illustration img {
@@ -393,4 +393,22 @@ a{text-decoration:none;color:inherit}
 }
 .back {
   display: none;
+}
+
+/* Fundo da tela de login em celulares */
+@media (max-width: 680px) {
+  .main:has(.login-page) {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-image: url("images/login_cel.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .login-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-image: none;
+  }
 }
