@@ -12,7 +12,18 @@
         <div class="recipe-card-head"><div><small>{{ r.code }}</small><h3>{{ r.name }}</h3></div>{% if r.available %}<span class="recipe-status ok">Ingredientes disponíveis</span>{% else %}<span class="recipe-status bad">Falta ingrediente</span>{% endif %}</div>
         <div class="recipe-meta">{% if r.yield_text %}<span>Rendimento: {{ r.yield_text }}</span>{% endif %}{% if r.preparation_time %}<span>Tempo: {{ r.preparation_time }}</span>{% endif %}</div>
         <div class="recipe-ingredients">{% for ing in r.ingredients %}<div><span>{% if ing.product_name %}{{ ing.product_name }}{% if ing.product_brand %} — {{ ing.product_brand }}{% endif %}{% else %}{{ ing.product_code }}{% endif %}</span><b>{{ ing.quantity }} {{ ing.unit }}</b></div>{% endfor %}</div>        {% if r.missing %}<div class="missing-box">Faltando/ajustar: {{ r.missing|join(', ') }}</div>{% endif %}
-        <a class="recipe-edit-link" href="{{ url_for('edit_recipe', code=r.code) }}">Editar receita →</a>
+        <div class="recipe-actions">
+          <a class="recipe-edit-link" href="{{ url_for('edit_recipe', code=r.code) }}">
+            Editar receita →
+          </a>
+        
+          <form method="post"
+                action="{{ url_for('delete_recipe') }}"
+                onsubmit="return confirm('Tem certeza que deseja excluir esta receita?')">
+            <input type="hidden" name="code" value="{{ r.code }}">
+            <button class="recipe-delete-button" type="submit">Excluir</button>
+          </form>
+        </div>
       </article>
     {% endfor %}
     </div>

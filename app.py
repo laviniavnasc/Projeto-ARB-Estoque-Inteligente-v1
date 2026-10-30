@@ -300,6 +300,20 @@ def edit_recipe():
     ingredients=query('SELECT * FROM recipe_ingredients WHERE recipe_id=%s ORDER BY id',(recipe['id'],),True) if recipe else []
     return render_template('recipe_edit.html', products=products, recipe=recipe, ingredients=ingredients, searched=bool(code))
 
+@app.route('/recipes/delete', methods=['POST'])
+@login_required
+def delete_recipe():
+    code = request.form.get('code', '').strip().upper()
+    recipe = get_recipe(code) if code else None
+
+    if not recipe:
+        flash('Receita não encontrada.', 'error')
+    else:
+        query('DELETE FROM recipes WHERE id=%s', (recipe['id'],))
+        flash('Receita excluída com sucesso!', 'success')
+
+    return redirect(url_for('recipes'))
+
 @app.route('/api/notifications')
 @login_required
 def api_notifications(): return jsonify(notifications())
