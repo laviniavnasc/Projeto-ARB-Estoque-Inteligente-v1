@@ -419,3 +419,11 @@ a{text-decoration:none;color:inherit}
   left: 20px;
   z-index: 25;
 }
+
+.recipe-empty-image {
+  display: block;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  margin: 0 auto;
+}

@@ -4,8 +4,7 @@
 <section class="page recipe-page">
   <a class="back" href="{{ url_for('home') }}">←</a><div class="page-icon arb-mark">ARB</div><h1>Livro de<br>receitas</h1>
   {% if not recipes %}
-    <div class="empty-state compact"><div class="recipe-hero">▤</div><h2>O livro de receitas está vazio.</h2><p>Cadastre as receitas da confeitaria e acompanhe se há ingredientes suficientes no estoque.</p><a class="primary button-link" href="{{ url_for('create_recipe') }}">Cadastrar primeira receita</a></div>
-  {% else %}
+  <div class="empty-state compact"><div class="recipe-hero"><img class="recipe-empty-image" src="{{ url_for('static', filename='images/vzlivro_rec.png') }}" alt=""></div><h2>O livro de receitas está vazio.</h2><p>Cadastre as receitas da confeitaria e acompanhe se há ingredientes suficientes no estoque.</p><a class="primary button-link" href="{{ url_for('create_recipe') }}">Cadastrar primeira receita</a></div>  {% else %}
     <div class="recipe-grid">
     {% for r in recipes %}
       <article class="recipe-card">
