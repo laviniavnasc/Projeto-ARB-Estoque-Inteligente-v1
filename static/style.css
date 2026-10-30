@@ -422,8 +422,8 @@ a{text-decoration:none;color:inherit}
 
 .recipe-empty-image {
   display: block;
-  width: 56px;
-  height: 56px;
+  width: 96px;
+  height: 96px;
   object-fit: contain;
   margin: 0 auto;
 }
