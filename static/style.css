@@ -430,3 +430,10 @@ a{text-decoration:none;color:inherit}
 .main:has(.home-page) .global-back {
   display: none;
 }
+.empty-catalog-icon {
+  display: block;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin: 0 auto 24px;
+}

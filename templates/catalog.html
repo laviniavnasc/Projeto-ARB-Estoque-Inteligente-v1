@@ -8,8 +8,11 @@
 
   {% if not products %}
     <div class="empty-state">
-      <div class="illustration">🗄️</div>
-      <h2>O catálogo de ingredientes está vazio.</h2>
+      <img
+      class="empty-catalog-icon"
+      src="{{ url_for('static', filename='images/catalogo_vzicon.png') }}"
+      alt=""
+    >      <h2>O catálogo de ingredientes está vazio.</h2>
       <a class="primary button-link" href="{{ url_for('create_product') }}">Cadastrar primeiro ingrediente</a>
     </div>
   {% else %}
